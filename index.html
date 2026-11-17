@@ -286,28 +286,17 @@
       </h1>
       <div class="tip">📢 域名可能变动，建议收藏此导航页！</div>
       <div class="links" style="margin-bottom: 20px">
-        <p>
-          <a
-            href="https://blog.xiaoqiangclub.cc.cd/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >https://blog.xiaoqiangclub.cc.cd/</a
-          >
-        </p>
-        <!-- <p>
-          <a
-            href="https://xiaoqiangclub.dpdns.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-            >https://xiaoqiangclub.dpdns.org/</a
-          >
-        </p> -->
+        <p><a href="https://trongchen.github.io" target="_blank" rel="noopener noreferrer">https://trongchen.github.io</a></p>
+        <p><a href="https://xiaoqclub.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqclub.github.io</a></p>
+        <p><a href="https://xiaoqiangclaw.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclaw.github.io</a></p>
+        <p><a href="https://blog.xiaoqiangclub.cc.cd/" target="_blank" rel="noopener noreferrer">https://blog.xiaoqiangclub.cc.cd/</a></p>
+        <p><a href="https://xiaoqiangclub163.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclub163.github.io</a></p>
       </div>
       <div>
         <a id="manualLink" class="btn" href="#">手动跳转</a>
         <span id="bookmarkBtn" class="btn">收藏本页</span>
       </div>
-      <div class="countdown">5秒后自动跳转</div>
+      <div class="countdown">3秒后自动跳转</div>
     </div>
 
     <!-- 自定义收藏提示弹窗 -->
@@ -393,11 +382,11 @@
         targetUrls[Math.floor(Math.random() * targetUrls.length)];
       document.getElementById("manualLink").href = targetUrl;
 
-      let seconds = 5;
+      let seconds = 3;
       const countdownElement = document.querySelector(".countdown");
       const timer = setInterval(() => {
-        if (seconds > 1) {
-          seconds--;
+        seconds--;
+        if (seconds > 0) {
           countdownElement.textContent = seconds + "秒后自动跳转";
         } else {
           clearInterval(timer);
