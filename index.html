@@ -110,6 +110,66 @@
         color: #b3caff;
       }
 
+      /* --- 镜像导航站弱化标记 --- */
+      .links p.mirror a {
+        color: #7f9fd4;
+        font-size: 0.95em;
+      }
+      .links p.mirror a:hover {
+        color: #a8c4f5;
+      }
+      .nav-tag {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 1px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #8a93b5;
+        border: 1px solid rgba(138, 147, 181, 0.35);
+        background: rgba(138, 147, 181, 0.08);
+        vertical-align: middle;
+      }
+
+      /* --- 主站高亮卡片 --- */
+      .links p.main-link {
+        background: linear-gradient(
+          45deg,
+          rgba(249, 168, 37, 0.14),
+          rgba(233, 69, 96, 0.14)
+        );
+        border: 1px solid rgba(249, 168, 37, 0.5);
+        border-radius: 12px;
+        padding: 10px 14px;
+        box-shadow: 0 0 18px rgba(249, 168, 37, 0.18);
+      }
+      .links p.main-link a {
+        color: #f9a825;
+        font-weight: 700;
+        font-size: 1.12em;
+        text-shadow: 0 0 12px rgba(249, 168, 37, 0.35);
+      }
+      .links p.main-link a:hover {
+        color: #ffc940;
+      }
+      .main-tag {
+        display: inline-block;
+        margin-left: 8px;
+        padding: 2px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 700;
+        color: #1a1a2e;
+        background: linear-gradient(45deg, #f9a825, #ffca28);
+        vertical-align: middle;
+        box-shadow: 0 2px 10px rgba(249, 168, 37, 0.35);
+      }
+      .links-note {
+        margin-top: 14px;
+        font-size: 12px;
+        color: #8a93b5;
+      }
+
       /* --- 按钮通用样式 --- */
       .btn {
         font-size: 1.1em;
@@ -286,12 +346,13 @@
       </h1>
       <div class="tip">📢 域名可能变动，建议收藏此导航页！</div>
       <div class="links" style="margin-bottom: 20px">
-        <p><a href="https://trongchen.github.io" target="_blank" rel="noopener noreferrer">https://trongchen.github.io</a></p>
-        <p><a href="https://xiaoqclub.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqclub.github.io</a></p>
-        <p><a href="https://xiaoqiangclaw.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclaw.github.io</a></p>
-        <p><a href="https://blog.xiaoqiangclub.cc.cd/" target="_blank" rel="noopener noreferrer">https://blog.xiaoqiangclub.cc.cd/</a></p>
-        <p><a href="https://xiaoqiangclub163.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclub163.github.io</a></p>
+        <p class="mirror"><a href="https://trongchen.github.io" target="_blank" rel="noopener noreferrer">https://trongchen.github.io</a><span class="nav-tag">导航站</span></p>
+        <p class="mirror"><a href="https://xiaoqclub.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqclub.github.io</a><span class="nav-tag">导航站</span></p>
+        <p class="mirror"><a href="https://xiaoqiangclaw.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclaw.github.io</a><span class="nav-tag">导航站</span></p>
+        <p class="main-link"><a href="https://blog.xiaoqiangclub.cc.cd/" target="_blank" rel="noopener noreferrer">https://blog.xiaoqiangclub.cc.cd/</a><span class="main-tag">主站</span></p>
+        <p class="mirror"><a href="https://xiaoqiangclub163.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclub163.github.io</a><span class="nav-tag">导航站</span></p>
       </div>
+      <div class="links-note">※ 标注「导航站」的为镜像导航页，打开后仍会自动跳回主站博客</div>
       <div>
         <a id="manualLink" class="btn" href="#">手动跳转</a>
         <span id="bookmarkBtn" class="btn">收藏本页</span>
