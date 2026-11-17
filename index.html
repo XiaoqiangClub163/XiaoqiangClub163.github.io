@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="images/avatar.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XiaoqiangClub 导航页</title>
+    <style>
+      /* --- 重置样式 --- */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* --- 整体页面样式 --- */
+      body {
+        font-family: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
+          "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-color: #1a1a2e;
+        color: #e0e0e0;
+        overflow: hidden; /* 隐藏滚动条 */
+      }
+
+      /* --- 粒子动画背景容器 --- */
+      #particles-js {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+      }
+
+      /* --- 内容容器 (毛玻璃效果) --- */
+      .container {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 40px 30px;
+        background: rgba(27, 27, 43, 0.5); /* 半透明背景 */
+        border-radius: 15px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+        backdrop-filter: blur(10px); /* 毛玻璃效果 */
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        max-width: 90%;
+        width: 600px;
+        animation: fadeIn 1s ease-out;
+      }
+
+      /* --- 头像样式与动画 --- */
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        display: block;
+        border: 3px solid rgba(255, 255, 255, 0.5);
+        animation: float 4s ease-in-out infinite;
+      }
+
+      /* --- 标题 (动态波浪效果) --- */
+      h1 {
+        font-size: 2.2em; /* 调整字体大小 */
+        margin-bottom: 15px;
+        color: #fff;
+        font-weight: 700;
+        display: flex; /* 使用flex布局 */
+        justify-content: center;
+        min-height: 40px; /* 增加最小高度防止动画抖动 */
+      }
+
+      h1 span {
+        display: inline-block;
+        animation: wave 1.8s infinite;
+        animation-delay: calc(0.1s * var(--i));
+      }
+
+      /* --- 温馨提示 --- */
+      .tip {
+        font-size: 1em;
+        margin-bottom: 20px;
+        color: #f9a825;
+        animation: fadeIn 2s 1s backwards;
+      }
+
+      /* --- 描述文字 --- */
+      p {
+        font-size: 1.1em;
+        margin-bottom: 25px;
+        color: #c0c0c0;
+        animation: fadeIn 2s 1.5s backwards;
+      }
+
+      /* --- 备用地址链接 --- */
+      .links p {
+        margin-bottom: 10px;
+      }
+      .links a {
+        color: #82aaff;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .links a:hover {
+        color: #b3caff;
+      }
+
+      /* --- 按钮通用样式 --- */
+      .btn {
+        font-size: 1.1em;
+        text-decoration: none;
+        background: linear-gradient(45deg, #e94560, #8a2be2);
+        color: #fff;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        margin: 10px;
+        display: inline-block;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        font-weight: 500;
+      }
+
+      .btn:hover {
+        transform: translateY(-5px) scale(1.05);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      }
+
+      /* --- 倒计时 --- */
+      .countdown {
+        font-size: 1.2em;
+        margin-top: 25px;
+        color: #fff;
+        font-weight: 500;
+      }
+
+      /* --- 动画定义 --- */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-15px);
+        }
+      }
+
+      @keyframes wave {
+        0%,
+        40%,
+        100% {
+          transform: translateY(0);
+          text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        20% {
+          transform: translateY(-15px);
+          text-shadow: 0 0 20px #fff, 0 0 30px #82aaff, 0 0 40px #82aaff;
+        }
+      }
+
+      /* --- 弹窗样式 --- */
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.3s, visibility 0.3s;
+        z-index: 100;
+      }
+
+      .modal.active {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .modal-content {
+        background: #1b1b2b;
+        color: #e0e0e0;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 80%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .modal-content p {
+        font-size: 1.2em;
+        margin-bottom: 20px;
+        color: #fff;
+      }
+
+      .modal-content .close-btn {
+        background: #e94560;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+
+      .modal-content .close-btn:hover {
+        background: #c63a50;
+      }
+
+      /* --- 移动端适配 --- */
+      @media (max-width: 768px) {
+        .container {
+          padding: 30px 20px;
+          width: 90%;
+        }
+
+        .avatar {
+          width: 100px;
+          height: 100px;
+        }
+
+        h1 {
+          font-size: 1.8em;
+          min-height: 35px;
+        }
+
+        .tip {
+          font-size: 0.9em;
+        }
+
+        p {
+          font-size: 1em;
+        }
+
+        .btn {
+          padding: 10px 20px;
+          font-size: 1em;
+          margin: 8px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .btn {
+          display: block; /* 按钮垂直排列 */
+          width: 80%;
+          margin: 10px auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 粒子动画背景 -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+      <img class="avatar" src="images/avatar.png" alt="头像" />
+      <h1>
+        <span style="--i: 1">即</span>
+        <span style="--i: 2">将</span>
+        <span style="--i: 3">进</span>
+        <span style="--i: 4">入</span>
+        <span style="--i: 5">.</span>
+        <span style="--i: 6">.</span>
+        <span style="--i: 7">.</span>
+      </h1>
+      <div class="tip">📢 域名可能变动，建议收藏此导航页！</div>
+      <div class="links" style="margin-bottom: 20px">
+        <p>
+          <a
+            href="https://blog.xiaoqiangclub.cc.cd/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://blog.xiaoqiangclub.cc.cd/</a
+          >
+        </p>
+        <!-- <p>
+          <a
+            href="https://xiaoqiangclub.dpdns.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >https://xiaoqiangclub.dpdns.org/</a
+          >
+        </p> -->
+      </div>
+      <div>
+        <a id="manualLink" class="btn" href="#">手动跳转</a>
+        <span id="bookmarkBtn" class="btn">收藏本页</span>
+      </div>
+      <div class="countdown">5秒后自动跳转</div>
+    </div>
+
+    <!-- 自定义收藏提示弹窗 -->
+    <div id="bookmarkModal" class="modal">
+      <div class="modal-content">
+        <p>请按 Ctrl+D (Windows) 或 Command+D (Mac) 收藏此页面。</p>
+        <button class="close-btn" id="closeModalBtn">关闭</button>
+      </div>
+    </div>
+
+    <!-- 引入 particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script>
+      // --- 初始化粒子动画 ---
+      particlesJS("particles-js", {
+        particles: {
+          number: { value: 80, density: { enable: true, value_area: 800 } },
+          color: { value: "#ffffff" },
+          shape: {
+            type: "circle",
+            stroke: { width: 0, color: "#000000" },
+            polygon: { nb_sides: 5 },
+          },
+          opacity: {
+            value: 0.5,
+            random: false,
+            anim: { enable: false, speed: 1, opacity_min: 0.1, sync: false },
+          },
+          size: {
+            value: 3,
+            random: true,
+            anim: { enable: false, speed: 40, size_min: 0.1, sync: false },
+          },
+          line_linked: {
+            enable: true,
+            distance: 150,
+            color: "#ffffff",
+            opacity: 0.4,
+            width: 1,
+          },
+          move: {
+            enable: true,
+            speed: 2,
+            direction: "none",
+            random: false,
+            straight: false,
+            out_mode: "out",
+            bounce: false,
+            attract: { enable: false, rotateX: 600, rotateY: 1200 },
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: { enable: true, mode: "grab" },
+            onclick: { enable: true, mode: "push" },
+            resize: true,
+          },
+          modes: {
+            grab: { distance: 140, line_opacity: 1 },
+            bubble: {
+              distance: 400,
+              size: 40,
+              duration: 2,
+              opacity: 8,
+              speed: 3,
+            },
+            repulse: { distance: 200, duration: 0.4 },
+            push: { particles_nb: 4 },
+            remove: { particles_nb: 2 },
+          },
+        },
+        retina_detect: true,
+      });
+
+      // --- 页面跳转逻辑 ---
+      const targetUrls = [
+        "https://blog.xiaoqiangclub.cc.cd/",
+        // "https://xiaoqiangclub.dpdns.org/",
+      ];
+      const targetUrl =
+        // 随机选择一个备用地址
+        targetUrls[Math.floor(Math.random() * targetUrls.length)];
+      document.getElementById("manualLink").href = targetUrl;
+
+      let seconds = 5;
+      const countdownElement = document.querySelector(".countdown");
+      const timer = setInterval(() => {
+        if (seconds > 1) {
+          seconds--;
+          countdownElement.textContent = seconds + "秒后自动跳转";
+        } else {
+          clearInterval(timer);
+          window.location.href = targetUrl;
+        }
+      }, 1000);
+
+      // --- 收藏弹窗逻辑 ---
+      const bookmarkBtn = document.getElementById("bookmarkBtn");
+      const bookmarkModal = document.getElementById("bookmarkModal");
+      const closeModalBtn = document.getElementById("closeModalBtn");
+
+      bookmarkBtn.addEventListener("click", function () {
+        if (window.external && "AddFavorite" in window.external) {
+          window.external.AddFavorite(location.href, document.title);
+        } else {
+          bookmarkModal.classList.add("active");
+        }
+      });
+
+      closeModalBtn.addEventListener("click", function () {
+        bookmarkModal.classList.remove("active");
+      });
+
+      bookmarkModal.addEventListener("click", function (e) {
+        if (e.target === bookmarkModal) {
+          bookmarkModal.classList.remove("active");
+        }
+      });
+    </script>
+  </body>
+</html>
