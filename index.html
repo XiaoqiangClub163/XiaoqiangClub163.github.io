@@ -349,8 +349,8 @@
         <p class="mirror"><a href="https://trongchen.github.io" target="_blank" rel="noopener noreferrer">https://trongchen.github.io</a><span class="nav-tag">导航站</span></p>
         <p class="mirror"><a href="https://xiaoqclub.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqclub.github.io</a><span class="nav-tag">导航站</span></p>
         <p class="mirror"><a href="https://xiaoqiangclaw.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclaw.github.io</a><span class="nav-tag">导航站</span></p>
-        <p class="main-link"><a href="https://blog.xiaoqiangclub.cc.cd/" target="_blank" rel="noopener noreferrer">https://blog.xiaoqiangclub.cc.cd/</a><span class="main-tag">主站</span></p>
         <p class="mirror"><a href="https://xiaoqiangclub163.github.io" target="_blank" rel="noopener noreferrer">https://xiaoqiangclub163.github.io</a><span class="nav-tag">导航站</span></p>
+        <p class="main-link"><a href="https://blog.xiaoqiangclub.cc.cd/" target="_blank" rel="noopener noreferrer">https://blog.xiaoqiangclub.cc.cd/</a><span class="main-tag">主站</span></p>
       </div>
       <div class="links-note">※ 标注「导航站」的为镜像导航页，打开后仍会自动跳回主站博客</div>
       <div>
@@ -443,17 +443,34 @@
         targetUrls[Math.floor(Math.random() * targetUrls.length)];
       document.getElementById("manualLink").href = targetUrl;
 
-      let seconds = 3;
+      // --- 倒计时（墙钟驱动 + 看门狗兜底，避免后台标签页节流导致卡住不跳转） ---
+      const totalSeconds = 3;
+      const startMs = performance.now();
       const countdownElement = document.querySelector(".countdown");
-      const timer = setInterval(() => {
-        seconds--;
-        if (seconds > 0) {
-          countdownElement.textContent = seconds + "秒后自动跳转";
-        } else {
-          clearInterval(timer);
-          window.location.href = targetUrl;
+      let redirected = false;
+      const doRedirect = () => {
+        if (redirected) return;
+        redirected = true;
+        window.location.href = targetUrl;
+      };
+      // 细腻 tick：每次醒来都按墙钟重算剩余秒，即便 setInterval 被节流也不会累积误差或卡住
+      const tickTimer = setInterval(() => {
+        const remainSec = Math.ceil(
+          (totalSeconds * 1000 - (performance.now() - startMs)) / 1000
+        );
+        if (remainSec <= 0) {
+          clearInterval(tickTimer);
+          clearTimeout(watchdog);
+          doRedirect();
+        } else if (remainSec <= totalSeconds) {
+          countdownElement.textContent = remainSec + "秒后自动跳转";
         }
-      }, 1000);
+      }, 100);
+      // 看门狗兜底：极端节流下若漏掉 0 点，总时长 +1s 后强制跳转，确保绝不停留
+      const watchdog = setTimeout(() => {
+        clearInterval(tickTimer);
+        doRedirect();
+      }, totalSeconds * 1000 + 1000);
 
       // --- 收藏弹窗逻辑 ---
       const bookmarkBtn = document.getElementById("bookmarkBtn");
